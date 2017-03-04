@@ -1,12 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="superHeroPhoneBook">
 <head>
   <meta charset="UTF-8">
   <title>Superhero Phone Book</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body ng-controller="heroesCtrl as vm">
+  <section>
 
+    <div class="">
+      <input type="text" ng-model="search" placeholder="Search">
+      <h3>Add Hero:</h3>
+      <label>Name:</label>
+      <input type="text" ng-model="vm.newHeroName">
+      <label>Phone:</label>
+      <input type="text" ng-model="vm.newHeroPhone">
+      <label>Affiliation:</label>
+      <select ng-model="vm.newHeroAfil">
+        <option value="marvel">Marvel</option>
+        <option value="dc">DC</option>
+      </select>
+      <label>Image Url:</label>
+      <input type="text" ng-model="vm.newHeroPic">
+      <button ng-click="vm.addHero()">Add Hero</button>
+    </div>
+
+    <div ng-repeat="hero in vm.heroes | filter: search" ng-class="hero.affiliation" >
+      <h2>{{ hero.name }}</h2>
+      <h3>{{ hero.phone }}</h3>
+      <button ng-click="active = !active">{{ active ? "Hide pic" : "View pic"}}</button>
+      <img ng-src="{{ hero.image_url }}" class="photo" ng-show="active">
+
+      <button ng-hide="editHide" ng-click="editHide = !editHide">{{ editHide ? "Hide" : "Edit"}}</button>
+
+      <ng-form ng-show="editHide">
+        <h3>Add Hero:</h3>
+        <label>Name:</label>
+        <input type="text" ng-model="hero.name" value="hero.name">
+        <label>Phone:</label>
+        <input type="text" ng-model="hero.phone" value="hero.phone">
+        <label>Affiliation:</label>
+        <select ng-model="hero.affiliation" value="hero.affiliation">
+          <option value="marvel" ng-selected="hero.affiliation == 'marvel' ? true : false">Marvel</option>
+          <option value="dc" ng-selected="hero.affiliation == 'dc' ? true : false">DC</option>
+        </select>
+        <label>Image Url:</label>
+        <input type="text" ng-model="hero.image_url" ng-value="hero.image_url">
+        <button ng-click="editHide = !editHide">Submit</button>
+      </ng-form>
+
+    </div>
+
+  </section>
   <script src="app.js"></script>
 </body>
 </html>
